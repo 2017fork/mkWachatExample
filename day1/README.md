@@ -1,4 +1,6 @@
-## node.js 开发微信公众号
+## node.js 开发微信公众号 --第一天
+> 本地代理的搭建、入门加密认证
+
 
 ### 环境配置
    1. 微信测试账号： https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
@@ -16,7 +18,7 @@
 
    > 如果接口配置信息提交失败，请查看ngrok是否启动且在线、app.listen(1234)端口和ngrok配置的本地端口是否一样、接口配置信息的URL和ngrok的域名是否一样。
 
-## 目录结构介绍
+### 目录结构介绍
 
 ```js
 |--- mkWachatExample
