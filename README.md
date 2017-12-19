@@ -12,4 +12,15 @@
         |--- app.js // 入口文件
         |--- package.json
         |--- README.md
+    |--- day2
+            |--- config
+                |--- wechat.text // 保存票据
+            |--- libs
+                |--- util.js // 读写操作文件
+            |--- wechat
+                |--- g // Generator
+                |--- util.js // 解析、格式化XML文件
+                |--- wechat.js // 处理微信交互文件
+            |--- package.json
+            |--- README.md
 ```
