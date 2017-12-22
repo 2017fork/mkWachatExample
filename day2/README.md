@@ -10,7 +10,7 @@
 
 ### access_token
 > * 每两个小时过期需要重新获取（让系统每隔两个小时去刷新一次access_token，保证access_token时刻是可用的）。
-  * 把access_token存在一个唯一的地方，方便频繁调用。
+> * 把access_token存在一个唯一的地方，方便频繁调用。
 
 ### 填坑!!!
 >
@@ -21,7 +21,7 @@ var data = response[1];// (坑就在这里)
 var data = response.body;//（正确的应该这样）
 ```
 
-> ```js
+```js
 Wechat.prototype.updateAccesstoken = function() {
     const appID = this.appID;
     const appSecret = this.appSecret;

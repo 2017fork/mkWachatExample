@@ -10,9 +10,9 @@ const sha1 = require('sha1');
 
 const config = {
     wechat: {
-        appID: 'wxfad1f2a72bcbabd5',
-        appSecret: '537855617a4dcda24f42dd66677a9290',
-        token: 'langge',
+        appID: '',
+        appSecret: '',
+        token: '',
     }
 };
 
