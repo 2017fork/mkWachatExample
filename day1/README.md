@@ -22,8 +22,8 @@
 
 ```js
 |--- mkWachatExample
-    |--- day1 // 第一天
-        |--- app.js // 入口文件
+    |--- day1  // 第一天
+        |--- app.js  // 入口文件
         |--- package.json
         |--- README.md
 ```
