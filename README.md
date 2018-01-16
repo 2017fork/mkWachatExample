@@ -47,5 +47,5 @@
         |--- config.js  // 微信配置文件
         |--- package.json
         |--- README.md
-        |--- weixin.js  // 回复文件
+        |--- reply.js  // 回复文件
 ```

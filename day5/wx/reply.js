@@ -1,6 +1,15 @@
-const config = require('./config');
-const Wechat = require('./wechat/wechat');
+const path = require('path');
+const config = require('../config');
+const Wechat = require('../wechat/wechat');
+const menu = require('./menu');
 const wechatApi = new Wechat(config.wechat);
+
+// wechatApi.deleteMenu().then(function () {
+//     return wechatApi.createMenu(menu)
+// }).then(function (msg) {
+//     console.log(msg)
+// });
+
 exports.reply = function* (next) {
     const message = this.weixin;
     if (message.MsgType === 'event') {
@@ -20,7 +29,35 @@ exports.reply = function* (next) {
             console.log('关注后扫二维码' + message.EventKey + ' ' + message.Ticket);
             this.body = '看到后扫一下哦';
         } else if (message.Event === 'VIEW') {
-            this.body = '点击了菜单中的链接：' + message.EventKey;
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'scancode_push') {
+            console.log(message.ScanCodeInfo.ScanResult);
+            console.log(message.ScanCodeInfo.ScanType);
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'scancode_waitmsg') {
+            console.log(message.ScanCodeInfo.ScanResult);
+            console.log(message.ScanCodeInfo.ScanType);
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_sysphoto') {
+            console.log(message.SendPicsInfo.PicList);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_photo_or_album') {
+            console.log(message)
+            console.log(message.SendPicsInfo.PicList.item);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_weixin') {
+            console.log(message.SendPicsInfo.PicList);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'location_select') {
+            console.log(message.SendLocationInfo.Location_X);
+            console.log(message.SendLocationInfo.Location_Y);
+            console.log(message.SendLocationInfo.Scale);
+            console.log(message.SendLocationInfo.Label);
+            console.log(message.SendLocationInfo.Poiname);
+            this.body = '点击了菜单中：' + message.EventKey;
         }
     } else if (message.MsgType === 'text') {
         const content = message.Content;
@@ -34,25 +71,25 @@ exports.reply = function* (next) {
 
             }];
         } else if (content === '1') {
-            const data = yield wechatApi.uploadMaterial('image', __dirname + '/1.png');
+            const data = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../1.png'));
             reply = {
                 type: 'image',
                 mediaId: data.media_id
             };
         } else if (content === '2') {
-            const data = yield wechatApi.uploadMaterial('image', __dirname + '/2.png');
+            const data = yield wechatApi.uploadMaterial('image', path.join(__dirname,  '../2.png'));
             reply = {
                 type: 'image',
                 mediaId: data.media_id
             };
         } else if (content === '3') {
-            const data = yield wechatApi.uploadMaterial('image', __dirname + '/3.png');
+            const data = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../3.png'));
             reply = {
                 type: 'image',
                 mediaId: data.media_id
             };
         } else if (content === '4') {
-            const data = yield wechatApi.uploadMaterial('video', __dirname + '/7.mp4', {
+            const data = yield wechatApi.uploadMaterial('video', path.join(__dirname, '../7.mp4'), {
                 type: 'video',
                 description: '{"title": "langge", "introduction": "nsnsnsn"}'
             });
@@ -64,7 +101,7 @@ exports.reply = function* (next) {
                 mediaId: data.media_id
             };
         } else if (content === '5') {
-            const picData = yield wechatApi.uploadMaterial('image', __dirname + '/2.png', {});
+            const picData = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../2.png'), {});
             console.log('ddd', picData);
             const meida = {
                 articles: [{
@@ -117,11 +154,41 @@ exports.reply = function* (next) {
             console.log(fetchGroup);
             reply = 'fetchGroup'
         } else if (content === '9') {
-
-        } else if (content === '10') {
+            const mpnews = {
+                media_id: 'YGZWDndWG_r9gtmBfH9fR48x6wcXpx4aX6LQ0QJm-YM'
+            };
+            const text = {
+                'content': '哈哈哈'
+            };
+            const msgData = yield wechatApi.sendByGroup('text', text, 2)
+            console.log('msgData', msgData)
+            reply = 's'
+        }else if (content === '10') {
+            const openid_list = [
+                'oIogg08fKTsmtckX_51QN0uMfh18'
+            ];
+            const batchtagging = yield wechatApi.batchtagging(openid_list, 2);
+            console.log('batchtagging', batchtagging);
+        } else if (content === '11') {
             const user = yield wechatApi.fetchUser(message.FromUserName, 'zh_CN');
             console.log('user', user);
             reply = 's'
+        } else if (content === '12') {
+            const text = {
+                'content': '哈哈哈'
+            };
+            const msgPreview = yield wechatApi.previewMass('text', text, 'o');
+            console.log('user', msgPreview);
+            reply = 's'
+        } else if (content === '13') {
+            const data = {
+                "query": "查一下明天从北京到上海的南航机票",
+                "city": "广西",
+                "category": "movie",
+                "uid": message.FromUserName
+            };
+            const semantic = yield wechatApi.semantic(data);
+            reply = JSON.stringify(semantic)
         }
 
         this.body = reply;
